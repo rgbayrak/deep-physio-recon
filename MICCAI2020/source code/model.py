@@ -38,6 +38,10 @@ class UNet(nn.Module):
         self.ec5 = self.encoder(128, 256, bias=True, batchnorm=True)
         self.ec6 = self.encoder(256, 256, bias=True, batchnorm=True)
         self.ec7 = self.encoder(256, 512, bias=True, batchnorm=True)
+        self.ec8 = self.encoder(512, 512, bias=True, batchnorm=True) 
+
+        # Add another layer 9 to the encoder model 
+        self.ec9 = self.encoder(512, 512, bias=True, batchnorm=True)
 
         self.pool0 = nn.MaxPool1d(2)
         self.pool1 = nn.MaxPool1d(2)
@@ -89,6 +93,10 @@ class UNet(nn.Module):
         e6 = self.ec6(e5)
         e7 = self.ec7(e6)
         del e5, e6
+
+        # Add layers 8 and 9 to the encoder model
+        e8 = self.ec8(e7)
+        e9 = self.ec9(e8)
 
         # print("block e7 size = %s" % (str(e7.size())))
         # print("block dc9 size = %s" % (str(self.dc9(e7).size())))
