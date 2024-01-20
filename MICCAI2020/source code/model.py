@@ -38,6 +38,17 @@ class UNet(nn.Module):
         self.ec5 = self.encoder(128, 256, bias=True, batchnorm=True)
         self.ec6 = self.encoder(256, 256, bias=True, batchnorm=True)
         self.ec7 = self.encoder(256, 512, bias=True, batchnorm=True)
+        self.ec8 = self.encoder(512, 1024, bias=True, batchnorm=True)
+
+        # add another encoder layer 
+        self.ec9 = self.encoder(1024, 1024, bias=True, batchnorm=True)
+
+        # add 5 more layers for encoder 
+        self.ec10 = self.encoder(1024, 1024, bias=True, batchnorm=True)
+        self.ec11 = self.encoder(1024, 1024, bias=True, batchnorm=True)
+        self.ec12 = self.encoder(1024, 1024, bias=True, batchnorm=True)
+        self.ec13 = self.encoder(1024, 1024, bias=True, batchnorm=True)
+        self.ec14 = self.encoder(1024, 1024, bias=True, batchnorm=True)
 
         self.pool0 = nn.MaxPool1d(2)
         self.pool1 = nn.MaxPool1d(2)
@@ -89,6 +100,16 @@ class UNet(nn.Module):
         e6 = self.ec6(e5)
         e7 = self.ec7(e6)
         del e5, e6
+
+         # New forward pass through ec8
+        ec8 = self.ec8(self.pool7(e7))
+
+        # New forward pass through ec9
+        ec9 = self.ec9(ec8)
+
+        # New forward pass through ec10
+        ec10 = self.ec10(ec9)
+
 
         # print("block e7 size = %s" % (str(e7.size())))
         # print("block dc9 size = %s" % (str(self.dc9(e7).size())))
